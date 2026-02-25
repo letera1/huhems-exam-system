@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sheet"
 
 import { LogoutButton } from "@/components/logout-button"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 const links = {
 	home: { href: "/", label: "Home" },
@@ -48,6 +49,7 @@ export async function SiteHeader() {
 					<Button asChild variant="ghost" size="sm">
 						<Link href={links.home.href}>Home</Link>
 					</Button>
+					<ThemeToggle />
 
 					{isLoggedIn && isAdmin ? (
 						<Button asChild variant="ghost" size="sm">
@@ -93,6 +95,7 @@ export async function SiteHeader() {
 				</nav>
 
 				<div className="flex items-center gap-2 md:hidden">
+					<ThemeToggle />
 					<Sheet>
 						<SheetTrigger asChild>
 							<Button variant="outline" size="icon" aria-label="Open menu">
