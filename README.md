@@ -1,224 +1,562 @@
-# HUHEMS - Hayamaya University Holistic Exam Management  System
+<div align="center">
 
-HUHEMS is a full-stack exam management system for Haramaya University. It supports admin-managed exams and question banks, student exam attempts with time limits, and reporting/analytics.
+# 🎓 HUHEMS
 
-Author : [Letera Tujo](https://github.com/letera1)
+### Haramaya University Holistic Exam Management System
 
-## Monorepo layout
+*A modern, full-stack exam management platform built with Go and Next.js*
 
-- `backend/`: Go API (Gin + GORM + PostgreSQL)
-- `frontend/`: Next.js web app (React + Tailwind UI)
+[![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-## Features
+**Author:** [Letera Tujo](https://github.com/letera1)
 
-### Admin
+[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Screenshots](#-screenshots)
 
-- Create and manage exams (settings, publish/unpublish, reports)
-- Create questions manually or import questions in bulk via CSV
-- Manage student accounts (create/edit/delete) and import students in bulk via CSV
-- View analytics (exam-level and performance breakdowns)
+</div>
 
-### Student
+---
 
-- Start exam attempts with a pre-start rules/confirmation gate
-- Countdown timer with auto-submit when time is up (client + server enforced)
-- Flag/unflag questions during an attempt
-- View attempt results with human-readable answer text
+## ✨ Features
 
-## Requirements
+### 👨‍💼 Admin Portal
 
-- Node.js 18+ (for the frontend)
-- Go 1.21+ (for the backend)
-- PostgreSQL 16 (or run it via Docker)
+<table>
+<tr>
+<td width="50%">
 
-## Configuration
+**📝 Exam Management**
+- Create and configure exams with flexible settings
+- Set time limits, attempt restrictions, and scheduling
+- Publish/unpublish exams with validation
+- Real-time monitoring and reporting
 
-### Backend env (`backend/.env`)
+</td>
+<td width="50%">
 
-Required variables:
+**📊 Analytics & Reports**
+- Comprehensive performance insights
+- Question-level difficulty analysis
+- Student progress tracking
+- Export detailed reports
 
-- `DB_URL` (Postgres connection string)
-- `JWT_SECRET` (used to sign auth tokens)
-- `PORT` (defaults to `8080`)
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-Example (already present in `backend/.env`):
+**❓ Question Bank**
+- Manual question creation
+- Bulk CSV import support
+- Single & multiple choice questions
+- Rich question editor
 
-```dotenv
-DB_URL=postgres://postgres:newpassword123@localhost:5432/huhems?sslmode=disable
-JWT_SECRET=yourstrongsecret
-PORT=8080
+</td>
+<td width="50%">
+
+**👥 Student Management**
+- Create and manage student accounts
+- Bulk CSV import for enrollment
+- Department and year tracking
+- Access control management
+
+</td>
+</tr>
+</table>
+
+### 🎓 Student Portal
+
+<table>
+<tr>
+<td width="50%">
+
+**📖 Exam Taking**
+- Clean, distraction-free interface
+- Real-time countdown timer
+- Question flagging system
+- Auto-save functionality
+
+</td>
+<td width="50%">
+
+**🏆 Results & Progress**
+- Instant score calculation
+- Detailed answer review
+- Performance history
+- Progress tracking
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**⏱️ Time Management**
+- Server-side time enforcement
+- Auto-submit on timeout
+- Time remaining indicators
+- Pause prevention
+
+</td>
+<td width="50%">
+
+**🔒 Security Features**
+- JWT authentication
+- Attempt limit enforcement
+- Academic integrity measures
+- Secure session management
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                         HUHEMS                              │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌──────────────┐              ┌──────────────┐           │
+│  │   Frontend   │◄────────────►│   Backend    │           │
+│  │              │              │              │           │
+│  │  Next.js 16  │   REST API   │   Go + Gin   │           │
+│  │  React 19    │              │   + GORM     │           │
+│  │  Tailwind 4  │              │              │           │
+│  └──────────────┘              └──────┬───────┘           │
+│                                        │                    │
+│                                        ▼                    │
+│                                 ┌──────────────┐           │
+│                                 │  PostgreSQL  │           │
+│                                 │      16      │           │
+│                                 └──────────────┘           │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-### Frontend env (`frontend/.env`)
+### 📁 Project Structure
 
-- `NEXT_PUBLIC_API_BASE_URL` (the backend base URL)
-
-```dotenv
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+```
+HUHEMS/
+├── 🔧 backend/              # Go API Server
+│   ├── cmd/                 # Entry points
+│   │   ├── api/            # Main API server
+│   │   ├── migrate/        # Database migrations
+│   │   └── seed/           # Database seeding
+│   ├── internal/           # Internal packages
+│   │   ├── auth/           # JWT & password handling
+│   │   ├── config/         # Configuration
+│   │   ├── controllers/    # HTTP handlers
+│   │   ├── db/             # Database connection
+│   │   ├── middleware/     # Auth middleware
+│   │   ├── models/         # Data models
+│   │   └── routes/         # Route definitions
+│   └── sql/                # SQL schemas
+│
+└── 🎨 frontend/            # Next.js Web App
+    ├── app/                # App router pages
+    │   ├── admin/          # Admin dashboard
+    │   ├── student/        # Student portal
+    │   ├── auth/           # Authentication pages
+    │   └── api/            # API routes (proxy)
+    ├── components/         # React components
+    │   ├── ui/             # UI components
+    │   └── auth/           # Auth components
+    └── lib/                # Utilities
 ```
 
-## Running the project
+---
 
-### Option A: Docker Compose (recommended)
+## 🚀 Quick Start
 
-From the repo root:
+### Prerequisites
+
+- **Node.js** 18+ ([Download](https://nodejs.org/))
+- **Go** 1.21+ ([Download](https://go.dev/))
+- **PostgreSQL** 16+ ([Download](https://www.postgresql.org/))
+- **Docker** (optional, recommended) ([Download](https://www.docker.com/))
+
+### 🐳 Option A: Docker Compose (Recommended)
+
+The fastest way to get started:
 
 ```bash
+# Clone the repository
+git clone https://github.com/letera1/huhems-exam-system.git
+cd huhems-exam-system
+
+# Start all services
 docker compose up -d --build
 ```
 
-Services:
+**Access the application:**
+- 🌐 Frontend: http://localhost:3000
+- 🔌 Backend API: http://localhost:8080
+- 🗄️ PostgreSQL: localhost:5432
 
-- Frontend: <http://localhost:3000>
-- Backend health: <http://localhost:8080/health>
-- Postgres: `localhost:5432`
+### 💻 Option B: Local Development
 
-If Docker commands fail on Windows, ensure Docker Desktop is installed and running.
-
-### Option B: Local dev (Go + Node)
-
-1) Start Postgres (Docker):
+#### 1️⃣ Start PostgreSQL
 
 ```bash
+# Using Docker
 docker compose up -d db
+
+# Or use your local PostgreSQL installation
 ```
 
-1) Backend:
+#### 2️⃣ Configure Backend
+
+Create `backend/.env`:
+
+```env
+DB_URL=postgres://postgres:newpassword123@localhost:5432/huhems?sslmode=disable
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+PORT=8080
+```
+
+Run migrations and start server:
 
 ```bash
 cd backend
+
+# Install dependencies
+go mod download
+
+# Run migrations
 go run ./cmd/migrate
+
+# Start the API server
 go run ./cmd/api
 ```
 
-1) Frontend:
+#### 3️⃣ Configure Frontend
+
+Create `frontend/.env`:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+```
+
+Install and run:
 
 ```bash
 cd frontend
+
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
 ```
 
-## Bulk CSV imports
+**🎉 Done!** Visit http://localhost:3000
 
-HUHEMS supports two bulk-import flows:
+---
 
-1) **Question import** (inside an exam)
-2) **Student import** (in Student Manager)
+## 📚 Documentation
 
-Both imports accept a `.csv` uploaded as multipart form-data field name: `file`.
+### 🔐 Default Credentials
 
-### 1) Questions CSV format
+After seeding the database, use these credentials:
 
-Import location:
+**Admin Account:**
+```
+Username: admin
+Password: admin123
+```
 
-- Admin → Exams → open an exam → Questions tab → **Import Questions (CSV)**
+**Student Account:**
+```
+Username: student
+Password: student123
+```
 
-CSV columns:
+> ⚠️ **Security Note:** Change these credentials immediately in production!
 
-| Column | Required | Description |
-| --- | ---: | --- |
-| `text` | yes | The question text |
-| `type` | yes | `single_choice` or `multi_choice` (also accepts `single`, `multi`, `sc`, `mc`) |
-| `choices` | yes | Pipe-separated choice list |
-| `correct` | yes | Either correct indices **or** exact choice text(s) |
+### 📥 Bulk Import Features
 
-#### `choices` separator
+#### 1. Questions CSV Import
 
-Use a pipe: `|`
+**Location:** Admin → Exams → Select Exam → Import Questions
 
-- `A|B|C|D`
-- `A | B | C | D` (spaces are allowed; they are trimmed)
+**CSV Format:**
 
-#### `correct` accepted values
+| Column | Required | Description | Example |
+|--------|----------|-------------|---------|
+| `text` | ✅ | Question text | "What is the capital of France?" |
+| `type` | ✅ | `single_choice` or `multi_choice` | single_choice |
+| `choices` | ✅ | Pipe-separated options | "Paris\|London\|Berlin\|Madrid" |
+| `correct` | ✅ | Correct answer(s) | "Paris" or "1" |
 
-You can provide correct answers in either of these ways:
-
-1) **1-based indices** into the `choices` list:
-
-- Single choice: `3`
-- Multi choice: `1|4` (commas also work: `1,4`)
-
-1) **Exact choice text(s)** (case-insensitive match):
-
-- Single choice: `Central Processing Unit`
-- Multi choice: `Option A|Option C`
-
-Note: if your correct value is numeric (example `80`), the importer treats it as an index only when it fits within the number of choices; otherwise it is treated as answer text and matched to a choice like `"80"`.
-
-#### Example questions CSV (copy/paste)
+**Example CSV:**
 
 ```csv
 text,type,choices,correct
-"What does CPU stand for?",single_choice,"Central Processing Unit|Computer Personal Unit|Central Performance Utility|Control Processing Unit",Central Processing Unit
-"Select prime numbers",multi_choice,"2|3|4|5","2|3|5"
-"Which HTTP method retrieves data?",single_choice,"POST|PUT|GET|DELETE",3
+"What does CPU stand for?",single_choice,"Central Processing Unit|Computer Personal Unit|Central Performance Utility|Control Processing Unit",1
+"Select all prime numbers",multi_choice,"2|3|4|5|6","2|3|5"
+"Which HTTP method retrieves data?",single_choice,"POST|PUT|GET|DELETE",GET
 ```
 
-CSV tips:
+**Tips:**
+- Use quotes for text containing commas
+- Separate multiple correct answers with `|` or `,`
+- Use 1-based indices or exact text for correct answers
 
-- If your question text contains commas, wrap it in quotes.
-- If you include a header row, columns can be reordered.
+#### 2. Students CSV Import
 
-### 2) Students (users) CSV format
+**Location:** Admin → Students → Import Students
 
-Import location:
+**CSV Format:**
 
-- Admin → Students → **Import Students (CSV)**
+| Column | Required | Description | Example |
+|--------|----------|-------------|---------|
+| `username` | ✅ | Unique username | student001 |
+| `email` | ✅ | Valid email address | student@university.edu |
+| `password` | ✅ | Initial password (min 8 chars) | SecurePass123! |
+| `fullName` | ✅ | Student's full name | John Doe |
+| `year` | ✅ | Academic year (≥1) | 2 |
+| `department` | ✅ | Department name | Computer Science |
 
-CSV columns:
-
-| Column | Required | Description |
-| --- | ---: | --- |
-| `username` | yes | Student username (must be unique) |
-| `email` | yes | Student email (must be unique; must be a valid email) |
-| `password` | yes | Initial password (min 8 characters) |
-| `fullName` | yes | Student full name |
-| `year` | yes | Numeric year/level (must be >= 1) |
-| `department` | yes | Department name |
-
-Header row is optional. If present, columns can be reordered.
-
-#### Example students CSV (copy/paste)
+**Example CSV:**
 
 ```csv
 username,email,password,fullName,year,department
-student001,student001@huhems.local,Student123!,Jane Doe,1,Computer Science
-student002,student002@huhems.local,Student123!,Abel Kebede,2,Information Systems
+student001,john.doe@university.edu,Student123!,John Doe,1,Computer Science
+student002,jane.smith@university.edu,Student123!,Jane Smith,2,Information Systems
+student003,bob.wilson@university.edu,Student123!,Bob Wilson,3,Software Engineering
 ```
 
-## Troubleshooting
+---
 
-### “Failed to fetch” during CSV import
+## 🎨 Screenshots
 
-This usually means the frontend cannot reach the backend URL configured by `NEXT_PUBLIC_API_BASE_URL`.
+<div align="center">
 
-Checklist:
+### 🏠 Landing Page
+*Modern, responsive design with dark/light theme support*
 
-1) Confirm backend is running:
+### 👨‍💼 Admin Dashboard
+*Comprehensive exam and student management*
 
-- <http://localhost:8080/health> should respond.
+### 🎓 Student Portal
+*Clean, distraction-free exam interface*
 
-1) Confirm frontend is configured correctly:
+### 📊 Analytics
+*Detailed performance insights and reports*
 
-- `frontend/.env` should contain `NEXT_PUBLIC_API_BASE_URL=http://localhost:8080`
+</div>
 
-1) Restart servers after changes:
+---
 
-- If you change backend routes/controllers, restart the backend process.
-- If you change `frontend/.env`, restart the Next.js dev server.
+## 🛠️ Technology Stack
 
-### “404 page not found” when importing
+### Backend
+- **Language:** Go 1.25+
+- **Framework:** Gin (HTTP router)
+- **ORM:** GORM
+- **Database:** PostgreSQL 16
+- **Authentication:** JWT (golang-jwt/jwt)
+- **Password:** bcrypt
 
-- If it’s from the backend: the backend route is missing or the backend wasn’t restarted.
-- If it’s from the frontend: the Next.js API route may not be built/running.
+### Frontend
+- **Framework:** Next.js 16 (App Router)
+- **UI Library:** React 19
+- **Styling:** Tailwind CSS 4
+- **Components:** Radix UI
+- **Icons:** Lucide React
+- **Language:** TypeScript 5
 
-## Security notes
+### DevOps
+- **Containerization:** Docker & Docker Compose
+- **Database:** PostgreSQL (Docker)
 
-- Change `JWT_SECRET` for real deployments.
-- Don’t use demo passwords in production.
-- Consider running behind HTTPS and using secure cookies in production.
+---
 
-## License
+## 🔧 Configuration
 
-MIT — see `LICENSE`.
+### Environment Variables
+
+#### Backend (`backend/.env`)
+
+```env
+# Database connection string
+DB_URL=postgres://user:password@host:port/database?sslmode=disable
+
+# JWT secret for token signing (change in production!)
+JWT_SECRET=your-super-secret-key-min-32-characters
+
+# Server port
+PORT=8080
+```
+
+#### Frontend (`frontend/.env`)
+
+```env
+# Backend API URL
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
+
+# Optional: Server-side API URL (for SSR)
+API_BASE_URL=http://backend:8080
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+<details>
+<summary><b>❌ "Failed to fetch" during CSV import</b></summary>
+
+**Cause:** Frontend cannot reach the backend API.
+
+**Solution:**
+1. Verify backend is running: http://localhost:8080/health
+2. Check `NEXT_PUBLIC_API_BASE_URL` in `frontend/.env`
+3. Restart both frontend and backend servers
+</details>
+
+<details>
+<summary><b>❌ "404 page not found" on API routes</b></summary>
+
+**Cause:** Backend routes not registered or server not restarted.
+
+**Solution:**
+1. Restart the backend server
+2. Check route definitions in `backend/internal/routes/routes.go`
+3. Verify the API endpoint exists
+</details>
+
+<details>
+<summary><b>❌ Database connection failed</b></summary>
+
+**Cause:** PostgreSQL not running or incorrect credentials.
+
+**Solution:**
+1. Ensure PostgreSQL is running: `docker compose ps`
+2. Verify `DB_URL` in `backend/.env`
+3. Check PostgreSQL logs: `docker compose logs db`
+</details>
+
+<details>
+<summary><b>❌ "Port already in use"</b></summary>
+
+**Cause:** Another process is using the port.
+
+**Solution:**
+```bash
+# Find process using port 3000 (frontend)
+lsof -i :3000
+# or
+netstat -ano | findstr :3000
+
+# Find process using port 8080 (backend)
+lsof -i :8080
+# or
+netstat -ano | findstr :8080
+
+# Kill the process or change the port in .env
+```
+</details>
+
+---
+
+## 🧪 Testing
+
+### Run Backend Tests
+
+```bash
+cd backend
+go test ./...
+```
+
+### Run Frontend Tests
+
+```bash
+cd frontend
+npm test
+```
+
+---
+
+## 📦 Deployment
+
+### Production Checklist
+
+- [ ] Change `JWT_SECRET` to a strong, random value
+- [ ] Update default admin/student passwords
+- [ ] Enable HTTPS/TLS
+- [ ] Set secure cookie flags
+- [ ] Configure CORS properly
+- [ ] Set up database backups
+- [ ] Configure environment-specific variables
+- [ ] Enable rate limiting
+- [ ] Set up monitoring and logging
+- [ ] Review security headers
+
+### Docker Production Build
+
+```bash
+# Build production images
+docker compose -f docker-compose.prod.yml build
+
+# Start production services
+docker compose -f docker-compose.prod.yml up -d
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Follow Go best practices and conventions
+- Use TypeScript for all frontend code
+- Write meaningful commit messages
+- Add tests for new features
+- Update documentation as needed
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Haramaya University for project support
+- Open source community for amazing tools
+- Contributors and testers
+
+---
+
+## 📞 Support
+
+- **Issues:** [GitHub Issues](https://github.com/letera1/huhems-exam-system/issues)
+- **Email:** [letera.tujo@example.com](mailto:letera.tujo@example.com)
+- **Documentation:** [Wiki](https://github.com/letera1/huhems-exam-system/wiki)
+
+---
+
+<div align="center">
+
+**Made with ❤️ by [Letera Tujo](https://github.com/letera1)**
+
+⭐ Star this repository if you find it helpful!
+
+</div>
