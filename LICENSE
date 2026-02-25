@@ -1,6 +1,9 @@
 MIT License
 
-Copyright (c) 2026 Letera Tujo
+Copyright (c) 2025-2026 Letera Tujo
+All rights reserved.
+
+================================================================================
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +22,99 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+================================================================================
+
+ADDITIONAL TERMS AND CONDITIONS
+
+1. ATTRIBUTION
+   When using this software in production or distributing modified versions,
+   you must provide appropriate credit to the original author (Letera Tujo)
+   and include a link to the original repository:
+   https://github.com/letera1/huhems-exam-system
+
+2. EDUCATIONAL USE
+   This software was developed for Haramaya University and is intended for
+   educational and institutional use. Commercial use is permitted under the
+   MIT License terms.
+
+3. SECURITY DISCLAIMER
+   Users are responsible for:
+   - Changing default credentials before production deployment
+   - Implementing appropriate security measures
+   - Keeping dependencies up to date
+   - Following security best practices
+   - Conducting security audits as needed
+
+4. DATA PRIVACY
+   Users must comply with applicable data protection regulations (GDPR, FERPA,
+   etc.) when handling student information and exam data. The software authors
+   are not responsible for data privacy compliance.
+
+5. NO WARRANTY
+   This software is provided "as is" without warranty of any kind. The authors
+   shall not be held liable for any damages arising from the use of this
+   software, including but not limited to:
+   - Data loss or corruption
+   - System downtime or failures
+   - Security breaches
+   - Academic integrity violations
+   - Any other direct or indirect damages
+
+6. THIRD-PARTY COMPONENTS
+   This software includes third-party open source components, each with their
+   own license terms. See the respective package.json and go.mod files for
+   details on third-party dependencies.
+
+7. MODIFICATIONS
+   Modified versions of this software must:
+   - Clearly indicate that changes were made
+   - Not use the original project name without permission
+   - Include this license file
+   - Maintain attribution to the original author
+
+8. SUPPORT
+   The authors provide this software without any obligation to provide support,
+   maintenance, updates, or bug fixes. Community support may be available
+   through GitHub issues.
+
+================================================================================
+
+THIRD-PARTY LICENSES
+
+This project uses the following major open source components:
+
+Backend:
+- Go (BSD-3-Clause)
+- Gin Web Framework (MIT)
+- GORM (MIT)
+- PostgreSQL Driver (MIT)
+- JWT-Go (MIT)
+- bcrypt (BSD-3-Clause)
+
+Frontend:
+- Next.js (MIT)
+- React (MIT)
+- Tailwind CSS (MIT)
+- Radix UI (MIT)
+- Lucide Icons (ISC)
+- TypeScript (Apache-2.0)
+
+For a complete list of dependencies and their licenses, please refer to:
+- backend/go.mod
+- frontend/package.json
+
+================================================================================
+
+CONTACT INFORMATION
+
+Project Repository: https://github.com/letera1/huhems-exam-system
+Author: Letera Tujo
+GitHub: https://github.com/letera1
+
+For questions, issues, or contributions, please use the GitHub repository's
+issue tracker and pull request system.
+
+================================================================================
+
+Last Updated: February 2026

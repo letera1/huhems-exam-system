@@ -513,27 +513,106 @@ docker compose -f docker-compose.prod.yml up -d
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+We love contributions! Whether it's bug fixes, new features, or documentation improvements, your help makes HUHEMS better for everyone.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Quick Start
 
-### Development Guidelines
+1. 🍴 Fork the repository
+2. 🌿 Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. ✍️ Make your changes
+4. ✅ Write/update tests
+5. 📝 Commit your changes (`git commit -m 'feat: add amazing feature'`)
+6. 🚀 Push to the branch (`git push origin feature/amazing-feature`)
+7. 🎉 Open a Pull Request
 
-- Follow Go best practices and conventions
-- Use TypeScript for all frontend code
-- Write meaningful commit messages
-- Add tests for new features
-- Update documentation as needed
+### 📖 Detailed Guidelines
+
+Please read our [Contributing Guide](CONTRIBUTING.md) for:
+- Code of Conduct
+- Development setup
+- Coding standards
+- Commit message conventions
+- Pull request process
+- Testing guidelines
+
+### 🐛 Found a Bug?
+
+- Check [existing issues](https://github.com/letera1/huhems-exam-system/issues) first
+- Open a new issue with detailed information
+- Include steps to reproduce
+- Add screenshots if applicable
+
+### 💡 Have an Idea?
+
+- Open a [GitHub Discussion](https://github.com/letera1/huhems-exam-system/discussions)
+- Describe your feature proposal
+- Explain the use case
+- Get feedback from maintainers
+
+### 🔒 Security Issues?
+
+Please review our [Security Policy](SECURITY.md) for reporting vulnerabilities.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** with additional terms - see the [LICENSE](LICENSE) file for complete details.
+
+### 📋 License Summary
+
+```
+MIT License - Copyright (c) 2025-2026 Letera Tujo
+```
+
+**You are free to:**
+- ✅ Use commercially
+- ✅ Modify and distribute
+- ✅ Use privately
+- ✅ Sublicense
+
+**Under the conditions:**
+- 📝 Include copyright notice
+- 📝 Include license text
+- 📝 Provide attribution
+
+**Limitations:**
+- ❌ No warranty provided
+- ❌ No liability accepted
+- ⚠️ Security is user's responsibility
+
+### 🔐 Important Security Notes
+
+Before deploying to production:
+- Change all default credentials
+- Update `JWT_SECRET` to a strong random value
+- Enable HTTPS/TLS
+- Implement rate limiting
+- Set up proper CORS policies
+- Follow security best practices
+- Conduct security audits
+
+### 🎓 Educational Use
+
+This software was developed for **Haramaya University** and is intended for educational and institutional use. Commercial use is permitted under the MIT License terms.
+
+### 📦 Third-Party Licenses
+
+This project includes open source components with their own licenses:
+
+**Backend Dependencies:**
+- Go (BSD-3-Clause)
+- Gin Web Framework (MIT)
+- GORM (MIT)
+- JWT-Go (MIT)
+
+**Frontend Dependencies:**
+- Next.js (MIT)
+- React (MIT)
+- Tailwind CSS (MIT)
+- Radix UI (MIT)
+
+See [LICENSE](LICENSE) for complete third-party license information.
 
 ---
 
@@ -545,11 +624,21 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📞 Support
+## 📞 Support & Community
 
-- **Issues:** [GitHub Issues](https://github.com/letera1/huhems-exam-system/issues)
-- **Email:** [letera.tujo@example.com](mailto:letera.tujo@example.com)
-- **Documentation:** [Wiki](https://github.com/letera1/huhems-exam-system/wiki)
+### 💬 Get Help
+
+- 📖 **Documentation:** [Wiki](https://github.com/letera1/huhems-exam-system/wiki)
+- 🐛 **Bug Reports:** [GitHub Issues](https://github.com/letera1/huhems-exam-system/issues)
+- 💡 **Feature Requests:** [GitHub Discussions](https://github.com/letera1/huhems-exam-system/discussions)
+- 📧 **Email:** [letera.tujo@example.com](mailto:letera.tujo@example.com)
+
+### 📚 Resources
+
+- [Contributing Guide](CONTRIBUTING.md) - How to contribute
+- [Security Policy](SECURITY.md) - Security guidelines
+- [License](LICENSE) - MIT License with additional terms
+- [Changelog](CHANGELOG.md) - Version history
 
 ---
 
