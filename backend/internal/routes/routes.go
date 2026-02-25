@@ -9,6 +9,10 @@ import (
 
 func Register(r *gin.Engine, db *gorm.DB, jwtSecret string) {
 
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "Welcome to HUHEMS API", "status": "online"})
+	})
+
 	r.GET("/health", controllers.Health)
 
 	r.POST("/auth/login", controllers.AuthLogin(db, jwtSecret))
