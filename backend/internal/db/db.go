@@ -8,7 +8,9 @@ import (
 )
 
 func Connect(dbURL string) (*gorm.DB, error) {
-	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{
+		PrepareStmt: false, // Disable prepared statement caching to avoid "prepared statement already exists" errors in serverless/pooled environments
+	})
 	if err != nil {
 		return nil, err
 	}

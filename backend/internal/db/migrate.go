@@ -11,6 +11,10 @@ func Migrate(db *gorm.DB) error {
 		return err
 	}
 
+	// First make sure the roles table exists if not it will be created by AutoMigrate
+	// However, if the table exists but lacks the deleted_at column or other fields, AutoMigrate should handle it.
+	// The problem is likely conflicting existing table structure with GORM's expectation or prepared statement caching issue.
+
 	return db.AutoMigrate(
 		&models.Role{},
 		&models.User{},
