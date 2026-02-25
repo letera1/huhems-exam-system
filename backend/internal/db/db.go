@@ -8,9 +8,17 @@ import (
 )
 
 func Connect(dbURL string) (*gorm.DB, error) {
-	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{
-		PrepareStmt: false, // Disable prepared statement caching to avoid "prepared statement already exists" errors in serverless/pooled environments
-	})
+	// GORM config with prepare statement disabled and skip default transaction
+	config := &gorm.Config{
+		PrepareStmt:            false,
+		SkipDefaultTransaction: true,
+	}
+
+	db, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  dbURL,
+		PreferSimpleProtocol: true, // This disables implicit prepared statements in the driver itself
+	}), config)
+
 	if err != nil {
 		return nil, err
 	}
