@@ -2,6 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { 
+  ClockIcon, 
+  FileTextIcon, 
+  PlayIcon, 
+  RefreshCwIcon,
+  TrophyIcon,
+  AlertCircleIcon
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -125,44 +133,103 @@ export function StudentDashboardClient() {
 
   return (
     <div className="grid gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-sm text-muted-foreground">
-          {loading ? "Loading..." : `${publishedCount} published exams`}
+      {/* Action Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-background/50 p-4 shadow-md backdrop-blur-sm">
+        <div className="flex items-center gap-2 text-sm">
+          {loading ? (
+            <div className="flex items-center gap-2">
+              <RefreshCwIcon className="size-4 animate-spin text-muted-foreground" />
+              <span className="text-muted-foreground">Loading exams...</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500">
+                <FileTextIcon className="size-4 text-white" />
+              </div>
+              <span className="font-semibold">{publishedCount}</span>
+              <span className="text-muted-foreground">published exams</span>
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={() => router.push("/student/results")}>My Results</Button>
-          <Button variant="outline" onClick={() => void load()} disabled={loading}>
+          <Button 
+            variant="outline" 
+            onClick={() => router.push("/student/results")}
+            className="group"
+          >
+            <TrophyIcon className="mr-2 size-4" />
+            My Results
+          </Button>
+          <Button 
+            variant="outline" 
+            onClick={() => void load()} 
+            disabled={loading}
+            className="group"
+          >
+            <RefreshCwIcon className={`mr-2 size-4 ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
             Refresh
           </Button>
         </div>
       </div>
 
+      {/* Error State */}
       {loadError ? (
-        <Card>
+        <Card className="border-2 border-red-200 bg-gradient-to-br from-red-50 to-rose-50 dark:border-red-800/50 dark:from-red-950/30 dark:to-rose-950/30">
           <CardHeader>
-            <CardTitle>Couldn’t load exams</CardTitle>
-            <CardDescription>{loadError}</CardDescription>
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/50">
+                <AlertCircleIcon className="size-6 text-red-600 dark:text-red-400" />
+              </div>
+              <div>
+                <CardTitle className="text-red-900 dark:text-red-100">Couldn't load exams</CardTitle>
+                <CardDescription className="text-red-700 dark:text-red-300">{loadError}</CardDescription>
+              </div>
+            </div>
           </CardHeader>
         </Card>
       ) : null}
 
-      <div className="grid gap-4">
-        {exams.map((exam) => (
-          <Card key={exam.id}>
-            <CardHeader>
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <CardTitle className="text-xl">{exam.title}</CardTitle>
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary">{exam.questionCount} Q</Badge>
-                  <Badge variant="secondary">{exam.maxAttempts} attempt(s)</Badge>
-                  <Badge variant="secondary">{exam.durationMinutes} min</Badge>
+      {/* Exams Grid */}
+      <div className="grid gap-6">
+        {exams.map((exam, index) => (
+          <Card 
+            key={exam.id} 
+            className="group relative overflow-hidden border-2 bg-gradient-to-br from-background to-background transition-all hover:scale-[1.01] hover:border-emerald-500/50 hover:shadow-2xl hover:shadow-emerald-500/10"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <div className="absolute -right-12 -top-12 size-40 rounded-full bg-gradient-to-br from-emerald-500/10 to-teal-500/10 blur-2xl transition-all group-hover:scale-150" />
+            
+            <CardHeader className="relative">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="flex-1">
+                  <CardTitle className="text-2xl font-bold">{exam.title}</CardTitle>
+                  {exam.description ? (
+                    <CardDescription className="mt-2 text-base">{exam.description}</CardDescription>
+                  ) : null}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="border-0 bg-gradient-to-r from-emerald-600 to-teal-600 text-white">
+                    <FileTextIcon className="mr-1 size-3" />
+                    {exam.questionCount} Questions
+                  </Badge>
+                  <Badge className="border-0 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+                    <ClockIcon className="mr-1 size-3" />
+                    {exam.durationMinutes} min
+                  </Badge>
+                  <Badge variant="secondary">
+                    {exam.maxAttempts} attempt{exam.maxAttempts !== 1 ? 's' : ''}
+                  </Badge>
                 </div>
               </div>
-              {exam.description ? <CardDescription>{exam.description}</CardDescription> : null}
             </CardHeader>
-            <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-sm text-muted-foreground">
-                Questions/page: <span className="text-foreground">{exam.questionsPerPage}</span>
+            
+            <CardContent className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="text-muted-foreground">Questions per page:</span>
+                  <span className="font-semibold">{exam.questionsPerPage}</span>
+                </div>
               </div>
               <Button
                 onClick={() => {
@@ -172,23 +239,42 @@ export function StudentDashboardClient() {
                   setRulesOpen(true);
                 }}
                 disabled={startingId === exam.id}
+                size="lg"
+                className="group/btn bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg hover:from-emerald-700 hover:to-teal-700"
               >
-                {startingId === exam.id ? "Starting..." : "Take Exam"}
+                {startingId === exam.id ? (
+                  <>
+                    <RefreshCwIcon className="mr-2 size-4 animate-spin" />
+                    Starting...
+                  </>
+                ) : (
+                  <>
+                    <PlayIcon className="mr-2 size-4" />
+                    Take Exam
+                  </>
+                )}
               </Button>
             </CardContent>
           </Card>
         ))}
 
+        {/* Empty State */}
         {!loading && !loadError && exams.length === 0 ? (
-          <Card>
-            <CardHeader>
-              <CardTitle>No published exams</CardTitle>
-              <CardDescription>Ask your admin to publish an exam.</CardDescription>
+          <Card className="border-2 border-dashed">
+            <CardHeader className="text-center">
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+                <FileTextIcon className="size-10 text-muted-foreground" />
+              </div>
+              <CardTitle className="text-2xl">No Published Exams</CardTitle>
+              <CardDescription className="text-base">
+                There are no exams available at the moment. Check back later or contact your administrator.
+              </CardDescription>
             </CardHeader>
           </Card>
         ) : null}
       </div>
 
+      {/* Rules Dialog */}
       <AlertDialog
         open={rulesOpen}
         onOpenChange={(nextOpen) => {
@@ -202,57 +288,76 @@ export function StudentDashboardClient() {
           setRulesOpen(nextOpen);
         }}
       >
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-2xl">
           <AlertDialogHeader>
-            <AlertDialogTitle>Exam Rules & Instructions</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-2xl">Exam Rules & Instructions</AlertDialogTitle>
+            <AlertDialogDescription className="text-base">
               Please read the following rules carefully before starting the exam.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
-          <div className="mt-2 space-y-3 text-sm">
-            <div className="rounded-md border p-3">
-              <ul className="list-disc space-y-2 pl-5">
-                <li>
-                  <span className="font-semibold">Time Limit:</span> The exam is time-bound. Once started, the
-                  timer cannot be paused.
+          <div className="mt-2 space-y-4">
+            <div className="rounded-xl border-2 bg-gradient-to-br from-background to-muted/20 p-5">
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30">
+                    <ClockIcon className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div>
+                    <span className="font-semibold">Time Limit:</span> The exam is time-bound. Once started, the
+                    timer cannot be paused.
+                  </div>
                 </li>
-                <li>
-                  <span className="font-semibold">No Tab Switching:</span> Do not refresh, close, or switch browser
-                  tabs during the exam.
+                <li className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                    <AlertCircleIcon className="size-3.5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <span className="font-semibold">No Tab Switching:</span> Do not refresh, close, or switch browser
+                    tabs during the exam.
+                  </div>
                 </li>
-                <li>
-                  <span className="font-semibold">No External Help:</span> Use of mobile phones, books, notes, or any
-                  external assistance is strictly prohibited.
+                <li className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
+                    <FileTextIcon className="size-3.5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <span className="font-semibold">No External Help:</span> Use of mobile phones, books, notes, or any
+                    external assistance is strictly prohibited.
+                  </div>
                 </li>
-                <li>
-                  <span className="font-semibold">Single Attempt:</span> You are allowed only one attempt. Answers
-                  cannot be changed after submission.
-                </li>
-                <li>
-                  <span className="font-semibold">Auto-Submission:</span> The exam will be automatically submitted
-                  when the time expires.
+                <li className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900/30">
+                    <TrophyIcon className="size-3.5 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div>
+                    <span className="font-semibold">Single Attempt:</span> You are allowed only one attempt. Answers
+                    cannot be changed after submission.
+                  </div>
                 </li>
               </ul>
-              <p className="mt-3 text-muted-foreground">Click “Start Exam” to agree to the rules and begin.</p>
             </div>
 
-            <div className="flex items-start gap-3 rounded-md border p-3">
+            <div className="flex items-start gap-3 rounded-xl border-2 bg-muted/30 p-4">
               <input
                 id="agree_exam_rules"
                 type="checkbox"
-                className="mt-0.5 h-4 w-4 rounded border-input bg-background text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="mt-0.5 h-5 w-5 rounded border-input bg-background text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 checked={rulesAgreed}
                 onChange={(e) => setRulesAgreed(e.target.checked)}
                 disabled={Boolean(startingId)}
               />
-              <Label htmlFor="agree_exam_rules" className="leading-snug">
-                I have read and agree to the exam rules.
+              <Label htmlFor="agree_exam_rules" className="cursor-pointer text-sm leading-snug">
+                I have read and agree to the exam rules and understand that violating these rules may result in disqualification.
               </Label>
             </div>
           </div>
 
-          {startError ? <p className="mt-3 text-sm font-medium text-destructive">{startError}</p> : null}
+          {startError ? (
+            <div className="rounded-lg border-2 border-red-200 bg-red-50 p-3 dark:border-red-800/50 dark:bg-red-950/30">
+              <p className="text-sm font-medium text-red-900 dark:text-red-100">{startError}</p>
+            </div>
+          ) : null}
 
           <AlertDialogFooter>
             <AlertDialogCancel asChild>
@@ -269,8 +374,19 @@ export function StudentDashboardClient() {
                   if (!rulesExam) return;
                   void startExamAttempt(rulesExam.id);
                 }}
+                className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
               >
-                {startingId ? "Starting..." : "Start Exam"}
+                {startingId ? (
+                  <>
+                    <RefreshCwIcon className="mr-2 size-4 animate-spin" />
+                    Starting...
+                  </>
+                ) : (
+                  <>
+                    <PlayIcon className="mr-2 size-4" />
+                    Start Exam
+                  </>
+                )}
               </Button>
             </AlertDialogAction>
           </AlertDialogFooter>
