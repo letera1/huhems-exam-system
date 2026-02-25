@@ -26,6 +26,12 @@ func main() {
 		log.Fatalf("failed to migrate database: %v", err)
 	}
 
+	// Seed the database with default users if they don't exist
+	if err := db.Seed(database); err != nil {
+		log.Printf("failed to seed database: %v", err)
+		// We log but don't fail, as the app might still be functional or it might be a transient error
+	}
+
 	router := gin.New()
 	router.Use(gin.Logger(), gin.Recovery())
 
