@@ -2,7 +2,7 @@ import Link from "next/link"
 
 import { cookies } from "next/headers"
 
-import { MenuIcon } from "lucide-react"
+import { MenuIcon, GraduationCapIcon } from "lucide-react"
 
 import { parseJwtPayload } from "@/lib/jwt"
 import { Button } from "@/components/ui/button"
@@ -40,8 +40,11 @@ export async function SiteHeader() {
 		<header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur">
 			<div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
 				<div className="flex items-center gap-2">
-					<Link href={links.home.href} className="font-semibold tracking-tight">
-						HUHEMS
+					<Link href={links.home.href} className="flex items-center gap-2 font-semibold tracking-tight transition-colors hover:text-primary">
+						<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600 shadow-lg">
+							<GraduationCapIcon className="size-5 text-white" />
+						</div>
+						<span className="text-lg">HUHEMS</span>
 					</Link>
 				</div>
 
@@ -104,7 +107,12 @@ export async function SiteHeader() {
 						</SheetTrigger>
 						<SheetContent side="right" className="w-80">
 							<SheetHeader>
-								<SheetTitle>HUHEMS</SheetTitle>
+								<SheetTitle className="flex items-center gap-2">
+									<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600 shadow-lg">
+										<GraduationCapIcon className="size-4 text-white" />
+									</div>
+									HUHEMS
+								</SheetTitle>
 							</SheetHeader>
 							<div className="mt-6 flex flex-col gap-2">
 								<Button asChild variant="ghost" className="justify-start">
