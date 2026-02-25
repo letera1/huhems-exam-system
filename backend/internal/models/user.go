@@ -12,6 +12,7 @@ type User struct {
 	Username          string     `gorm:"uniqueIndex;not null"`
 	Email             string     `gorm:"uniqueIndex;not null"`
 	PasswordHash      string     `gorm:"not null"`
+	DefaultPassword   string     `gorm:"type:text" json:"-"` // Stores the default password (plain text, only for display)
 	LastLoginAt       *time.Time `json:"lastLoginAt"`
 	PasswordChangedAt *time.Time `json:"passwordChangedAt"`
 

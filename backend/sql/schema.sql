@@ -27,6 +27,9 @@ CREATE TABLE IF NOT EXISTS users (
   username text NOT NULL UNIQUE,
   email text NOT NULL UNIQUE,
   password_hash text NOT NULL,
+  default_password text NULL,
+  last_login_at timestamptz NULL,
+  password_changed_at timestamptz NULL,
   role_id uuid NOT NULL REFERENCES roles(id)
 );
 

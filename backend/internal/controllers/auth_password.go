@@ -70,13 +70,14 @@ func AuthChangePassword(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		if err := db.Model(&models.User{}).Where("id = ?", user.ID).Update("password_hash", hash).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update password"})
-			return
+		now := time.Now().UTC()
+		updates := map[string]interface{}{
+			"password_hash":      hash,
+			"password_changed_at": &now,
+			"default_password":   "", // Clear the default password
 		}
 
-		now := time.Now().UTC()
-		if err := db.Model(&models.User{}).Where("id = ?", user.ID).Update("password_changed_at", &now).Error; err != nil {
+		if err := db.Model(&models.User{}).Where("id = ?", user.ID).Updates(updates).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "failed to update password"})
 			return
 		}

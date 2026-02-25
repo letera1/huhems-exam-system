@@ -1,9 +1,9 @@
 package routes
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/letera1/huhems-exam-system/backend/internal/controllers"
 	"github.com/letera1/huhems-exam-system/backend/internal/middleware"
-	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
@@ -12,6 +12,8 @@ func Register(r *gin.Engine, db *gorm.DB, jwtSecret string) {
 	r.GET("/health", controllers.Health)
 
 	r.POST("/auth/login", controllers.AuthLogin(db, jwtSecret))
+	// Check if default credentials are still active
+	r.GET("/auth/default-status/:role", controllers.AuthCheckDefaultPasswordStatus(db))
 
 	authGroup := r.Group("/")
 	authGroup.Use(middleware.AuthRequired(jwtSecret))

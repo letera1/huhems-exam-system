@@ -6,22 +6,24 @@ import (
 	"strings"
 	"time"
 
-	"github.com/letera1/huhems-exam-system/backend/internal/auth"
-	"github.com/letera1/huhems-exam-system/backend/internal/models"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/letera1/huhems-exam-system/backend/internal/auth"
+	"github.com/letera1/huhems-exam-system/backend/internal/models"
 	"gorm.io/gorm"
 )
 
 type adminStudentView struct {
-	ID         uuid.UUID `json:"id"`
-	UserID     uuid.UUID `json:"userId"`
-	Username   string    `json:"username"`
-	Email      string    `json:"email"`
-	FullName   string    `json:"fullName"`
-	Year       int       `json:"year"`
-	Department string    `json:"department"`
-	CreatedAt  time.Time `json:"createdAt"`
+	ID                uuid.UUID  `json:"id"`
+	UserID            uuid.UUID  `json:"userId"`
+	Username          string     `json:"username"`
+	Email             string     `json:"email"`
+	FullName          string     `json:"fullName"`
+	Year              int        `json:"year"`
+	Department        string     `json:"department"`
+	CreatedAt         time.Time  `json:"createdAt"`
+	PasswordChangedAt *time.Time `json:"passwordChangedAt"`
+	DefaultPassword   string     `json:"defaultPassword,omitempty"` // Only shown if password not changed
 }
 
 type adminStudentCreateRequest struct {
@@ -51,16 +53,22 @@ func AdminStudentsList(db *gorm.DB) gin.HandlerFunc {
 
 		resp := make([]adminStudentView, 0, len(students))
 		for _, s := range students {
-			resp = append(resp, adminStudentView{
-				ID:         s.ID,
-				UserID:     s.UserID,
-				Username:   s.User.Username,
-				Email:      s.User.Email,
-				FullName:   s.FullName,
-				Year:       s.Year,
-				Department: s.Department,
-				CreatedAt:  s.CreatedAt,
-			})
+			view := adminStudentView{
+				ID:                s.ID,
+				UserID:            s.UserID,
+				Username:          s.User.Username,
+				Email:             s.User.Email,
+				FullName:          s.FullName,
+				Year:              s.Year,
+				Department:        s.Department,
+				CreatedAt:         s.CreatedAt,
+				PasswordChangedAt: s.User.PasswordChangedAt,
+			}
+			// Only show default password if it hasn't been changed
+			if s.User.PasswordChangedAt == nil {
+				view.DefaultPassword = s.User.DefaultPassword
+			}
+			resp = append(resp, view)
 		}
 
 		c.JSON(http.StatusOK, resp)
@@ -124,10 +132,11 @@ func AdminStudentsCreate(db *gorm.DB) gin.HandlerFunc {
 		var createdStudent models.Student
 		err = db.Transaction(func(tx *gorm.DB) error {
 			user := models.User{
-				Username:     req.Username,
-				Email:        req.Email,
-				PasswordHash: hash,
-				RoleID:       role.ID,
+				Username:        req.Username,
+				Email:           req.Email,
+				PasswordHash:    hash,
+				DefaultPassword: req.Password, // Store the default password
+				RoleID:          role.ID,
 			}
 			if err := tx.Create(&user).Error; err != nil {
 				return err
@@ -153,14 +162,16 @@ func AdminStudentsCreate(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusCreated, adminStudentView{
-			ID:         createdStudent.ID,
-			UserID:     createdStudent.UserID,
-			Username:   createdStudent.User.Username,
-			Email:      createdStudent.User.Email,
-			FullName:   createdStudent.FullName,
-			Year:       createdStudent.Year,
-			Department: createdStudent.Department,
-			CreatedAt:  createdStudent.CreatedAt,
+			ID:                createdStudent.ID,
+			UserID:            createdStudent.UserID,
+			Username:          createdStudent.User.Username,
+			Email:             createdStudent.User.Email,
+			FullName:          createdStudent.FullName,
+			Year:              createdStudent.Year,
+			Department:        createdStudent.Department,
+			CreatedAt:         createdStudent.CreatedAt,
+			PasswordChangedAt: createdStudent.User.PasswordChangedAt,
+			DefaultPassword:   createdStudent.User.DefaultPassword,
 		})
 	}
 }

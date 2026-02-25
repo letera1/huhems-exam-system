@@ -5,11 +5,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/letera1/huhems-exam-system/backend/internal/auth"
 	"github.com/letera1/huhems-exam-system/backend/internal/middleware"
 	"github.com/letera1/huhems-exam-system/backend/internal/models"
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -82,6 +82,36 @@ func AuthLogin(db *gorm.DB, jwtSecret string) gin.HandlerFunc {
 	}
 }
 
+// CheckDefaultPasswordStatus returns true if the specified default user (admin/student) has NOT changed their password.
+// This is a public endpoint used to determine if the "Default Credentials" hint should be shown on the login page.
+func AuthCheckDefaultPasswordStatus(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		roleName := c.Param("role")
+		var targetUsername string
+
+		if roleName == "admin" {
+			targetUsername = "admin"
+		} else if roleName == "student" {
+			targetUsername = "student"
+		} else {
+			c.JSON(http.StatusBadRequest, gin.H{"message": "invalid role"})
+			return
+		}
+
+		var user models.User
+		// Find user by username ("admin" or "student")
+		if err := db.Where("username = ?", targetUsername).First(&user).Error; err != nil {
+			// If user doesn't exist, we assume default creds are NOT valid (so don't show hint)
+			c.JSON(http.StatusOK, gin.H{"isDefault": false})
+			return
+		}
+
+		// If PasswordChangedAt is nil, it means they are still on the default password
+		isDefault := user.PasswordChangedAt == nil
+		c.JSON(http.StatusOK, gin.H{"isDefault": isDefault})
+	}
+}
+
 func AuthMe(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userIDAny, ok := c.Get(string(middleware.ContextUserID))
@@ -97,13 +127,20 @@ func AuthMe(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{
+		response := gin.H{
 			"id":                   user.ID,
 			"username":             user.Username,
 			"email":                user.Email,
 			"role":                 user.Role.Name,
 			"passwordChangedAt":    user.PasswordChangedAt,
 			"passwordNeverChanged": user.PasswordChangedAt == nil,
-		})
+		}
+
+		// Only show default password if it hasn't been changed
+		if user.PasswordChangedAt == nil && user.DefaultPassword != "" {
+			response["defaultPassword"] = user.DefaultPassword
+		}
+
+		c.JSON(http.StatusOK, response)
 	}
 }

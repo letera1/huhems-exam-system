@@ -27,6 +27,8 @@ type StudentRow = {
   year: number;
   department: string;
   createdAt: string;
+  isPasswordChanged: boolean;
+  defaultPassword?: string; // Only present if password not changed
 };
 
 type StudentSort = "newest" | "oldest" | "name_asc" | "name_desc";
@@ -52,6 +54,8 @@ function normalizeStudent(raw: unknown): StudentRow {
     year: Number(r?.year ?? r?.Year ?? 0),
     department: String(r?.department ?? r?.Department ?? ""),
     createdAt: String(r?.createdAt ?? r?.CreatedAt ?? ""),
+    isPasswordChanged: Boolean(r?.passwordChangedAt || r?.PasswordChangedAt),
+    defaultPassword: r?.defaultPassword ? String(r.defaultPassword) : undefined,
   };
 }
 
@@ -240,6 +244,7 @@ export function AdminStudentsClient() {
                     <th className="px-3 py-2 font-medium">Email</th>
                     <th className="px-3 py-2 font-medium">Year</th>
                     <th className="px-3 py-2 font-medium">Department</th>
+                    <th className="px-3 py-2 font-medium">Password</th>
                     <th className="px-3 py-2 font-medium">Created</th>
                     <th className="px-3 py-2 font-medium">Actions</th>
                   </tr>
@@ -287,6 +292,18 @@ export function AdminStudentsClient() {
                         ) : (
                           <Badge variant="secondary">{s.department || "—"}</Badge>
                         )}
+                      </td>
+                      <td className="px-3 py-2 text-center text-xs">
+                         {s.isPasswordChanged ? (
+                           <Badge variant="outline" className="border-green-600 bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-400">Changed</Badge>
+                         ) : s.defaultPassword ? (
+                           <div className="flex flex-col gap-1">
+                             <Badge variant="destructive" className="bg-orange-100 text-orange-700 hover:bg-orange-200 border-orange-200 dark:bg-orange-950 dark:text-orange-400">Default</Badge>
+                             <code className="text-xs font-mono bg-muted px-2 py-1 rounded">{s.defaultPassword}</code>
+                           </div>
+                         ) : (
+                           <Badge variant="destructive" className="bg-orange-100 text-orange-700 hover:bg-orange-200 border-orange-200 dark:bg-orange-950 dark:text-orange-400">Default</Badge>
+                         )}
                       </td>
                       <td className="px-3 py-2 text-muted-foreground">{formatDateTime(s.createdAt)}</td>
                       <td className="px-3 py-2">

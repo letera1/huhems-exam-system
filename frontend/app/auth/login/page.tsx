@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"
 import { Suspense } from "react"
 import { LoginForm } from "@/components/auth/login-form"
 import { Button } from "@/components/ui/button"
+import { DefaultCredentialsHint } from "@/components/auth/default-credentials-hint"
 
 function LoginContent() {
   const searchParams = useSearchParams()
@@ -13,6 +14,7 @@ function LoginContent() {
 
   return (
     <div className="grid gap-6">
+      <DefaultCredentialsHint role={role} />
       <div className="flex items-center justify-center p-1 bg-muted rounded-lg w-fit mx-auto shadow-sm border">
         <Button
           variant={role === "student" ? "secondary" : "ghost"}

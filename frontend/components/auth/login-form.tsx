@@ -78,6 +78,19 @@ export function LoginForm({
                   return;
                 }
 
+                // Removed automatic dismissal on login. 
+                // We now rely on the user manually dismissing it OR the password change flow.
+
+                if (data.requiresPasswordChange) {
+                  // Redirect to change password page if required
+                  if (role === "admin") {
+                    router.push("/auth/admin-login/change-password");
+                  } else {
+                    router.push("/auth/login/change-password?role=student");
+                  }
+                  return;
+                }
+
                 if (role !== expectedRole) {
                   setError(
                     expectedRole === "admin"

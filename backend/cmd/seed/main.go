@@ -3,11 +3,11 @@ package main
 import (
 	"log"
 
+	"github.com/google/uuid"
 	"github.com/letera1/huhems-exam-system/backend/internal/auth"
 	"github.com/letera1/huhems-exam-system/backend/internal/config"
 	"github.com/letera1/huhems-exam-system/backend/internal/db"
 	"github.com/letera1/huhems-exam-system/backend/internal/models"
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -97,10 +97,11 @@ func upsertUserReturning(db *gorm.DB, username, email, password string, roleID u
 
 	if err == gorm.ErrRecordNotFound {
 		user = models.User{
-			Username:     username,
-			Email:        email,
-			PasswordHash: hash,
-			RoleID:       roleID,
+			Username:        username,
+			Email:           email,
+			PasswordHash:    hash,
+			DefaultPassword: password, // Store the default password
+			RoleID:          roleID,
 		}
 		if err := db.Create(&user).Error; err != nil {
 			return models.User{}, err
@@ -112,7 +113,10 @@ func upsertUserReturning(db *gorm.DB, username, email, password string, roleID u
 	user.Username = username
 	user.Email = email
 	user.PasswordHash = hash
+	user.DefaultPassword = password // Store the default password
 	user.RoleID = roleID
+	// Force reset "PasswordChangedAt" to nil so they appear as default users
+	user.PasswordChangedAt = nil
 
 	if err := db.Save(&user).Error; err != nil {
 		return models.User{}, err

@@ -70,7 +70,15 @@ export function FirstLoginChangePasswordDialog({
                 e.preventDefault();
                 setBusy(true);
                 (async () => {
-                  await ack();
+                  try {
+                    await fetch("/api/auth/first-login", { method: "POST" });
+                    
+                    // Mark hint as dismissed since user is acknowledging the prompt to change password
+                    if (typeof window !== "undefined") {
+                      localStorage.setItem(`huhems_default_creds_dismissed_${role}`, "true");
+                    }
+                  } catch {}
+
                   router.push(role === "admin" ? "/admin/password" : "/student/password");
                   router.refresh();
                 })().finally(() => setBusy(false));
