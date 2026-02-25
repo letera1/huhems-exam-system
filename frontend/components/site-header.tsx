@@ -82,14 +82,9 @@ export async function SiteHeader() {
 					) : null}
 
 					{!isLoggedIn ? (
-						<>
-							<Button asChild variant="outline" size="sm">
-								<Link href={links.login.href}>{links.login.label}</Link>
-							</Button>
-							<Button asChild variant="outline" size="sm">
-								<Link href={links.adminLogin.href}>{links.adminLogin.label}</Link>
-							</Button>
-						</>
+						<Button asChild variant="outline" size="sm">
+							<Link href="/auth/login">Login</Link>
+						</Button>
 					) : (
 						<LogoutButton variant="destructive" size="sm">
 							Logout

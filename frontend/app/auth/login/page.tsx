@@ -1,27 +1,64 @@
-import Link from "next/link";
+"use client"
 
-import { LoginForm } from "@/components/auth/login-form";
-import { Button } from "@/components/ui/button";
+import * as React from "react"
+import { useSearchParams } from "next/navigation"
+import { Suspense } from "react"
+import { LoginForm } from "@/components/auth/login-form"
+import { Button } from "@/components/ui/button"
+
+function LoginContent() {
+  const searchParams = useSearchParams()
+  const defaultRole = searchParams.get("role") === "admin" ? "admin" : "student"
+  const [role, setRole] = React.useState<"student" | "admin">(defaultRole)
+
+  return (
+    <div className="grid gap-6">
+      <div className="flex items-center justify-center p-1 bg-muted rounded-lg w-fit mx-auto shadow-sm border">
+        <Button
+          variant={role === "student" ? "secondary" : "ghost"}
+          size="sm"
+          onClick={() => setRole("student")}
+          className="text-sm px-8"
+        >
+          Student
+        </Button>
+        <Button
+          variant={role === "admin" ? "secondary" : "ghost"}
+          size="sm"
+          onClick={() => setRole("admin")}
+          className="text-sm px-8"
+        >
+          Admin
+        </Button>
+      </div>
+
+      {role === "student" ? (
+        <LoginForm
+          key="student"
+          title="Student Login"
+          description="Sign in to access your student dashboard and exams."
+          expectedRole="student"
+          defaultRedirectPath="/student"
+          allowNextPrefix="/student"
+        />
+      ) : (
+        <LoginForm
+          key="admin"
+          title="Admin Login"
+          description="Sign in as an administrator to access management dashboards."
+          expectedRole="admin"
+          defaultRedirectPath="/admin"
+          allowNextPrefix="/admin"
+        />
+      )}
+    </div>
+  )
+}
 
 export default function LoginPage() {
   return (
-    <div className="grid gap-4">
-      <LoginForm
-        title="Student Login"
-        description="Sign in to access your student dashboard and exams."
-        expectedRole="student"
-        defaultRedirectPath="/student"
-        allowNextPrefix="/student"
-      />
-
-      <div className="mx-auto w-full max-w-md text-center text-xs text-muted-foreground">
-        <p>
-          Admin?{" "}
-          <Button asChild variant="link" className="h-auto px-0 text-xs">
-            <Link href="/auth/admin-login">Go to Admin Login</Link>
-          </Button>
-        </p>
-      </div>
-    </div>
-  );
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
+  )
 }
