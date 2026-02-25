@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	"github.com/Keneandita/huhems-backend/internal/auth"
-	"github.com/Keneandita/huhems-backend/internal/config"
-	"github.com/Keneandita/huhems-backend/internal/db"
-	"github.com/Keneandita/huhems-backend/internal/models"
+	"github.com/letera1/huhems-exam-system/backend/internal/auth"
+	"github.com/letera1/huhems-exam-system/backend/internal/config"
+	"github.com/letera1/huhems-exam-system/backend/internal/db"
+	"github.com/letera1/huhems-exam-system/backend/internal/models"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )

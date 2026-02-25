@@ -1,6 +1,6 @@
 package controllers
 
-import "github.com/Keneandita/huhems-backend/internal/models"
+import "github.com/letera1/huhems-exam-system/backend/internal/models"
 
 func isAnswerCorrect(questionType string, correctSet map[string]struct{}, selected []string) bool {
 	if correctSet == nil {

@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/Keneandita/huhems-backend/internal/config"
-	"github.com/Keneandita/huhems-backend/internal/db"
+	"github.com/letera1/huhems-exam-system/backend/internal/config"
+	"github.com/letera1/huhems-exam-system/backend/internal/db"
 )
 
 func main() {

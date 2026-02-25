@@ -2,7 +2,7 @@
 
 HUHEMS is a full-stack exam management system for Haramaya University. It supports admin-managed exams and question banks, student exam attempts with time limits, and reporting/analytics.
 
-Author : [Kenean Dita](https://www.github.com/keneandita)
+Author : [Letera Tujo](https://github.com/letera1)
 
 ## Monorepo layout
 

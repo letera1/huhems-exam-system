@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Keneandita/huhems-backend/internal/middleware"
-	"github.com/Keneandita/huhems-backend/internal/models"
+	"github.com/letera1/huhems-exam-system/backend/internal/middleware"
+	"github.com/letera1/huhems-exam-system/backend/internal/models"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/lib/pq"

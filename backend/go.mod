@@ -1,4 +1,4 @@
-module github.com/Keneandita/huhems-backend
+module github.com/letera1/huhems-exam-system/backend
 
 go 1.25.5
 

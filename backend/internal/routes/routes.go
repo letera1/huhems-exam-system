@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/Keneandita/huhems-backend/internal/controllers"
-	"github.com/Keneandita/huhems-backend/internal/middleware"
+	"github.com/letera1/huhems-exam-system/backend/internal/controllers"
+	"github.com/letera1/huhems-exam-system/backend/internal/middleware"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )

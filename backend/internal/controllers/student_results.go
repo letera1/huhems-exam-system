@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Keneandita/huhems-backend/internal/models"
+	"github.com/letera1/huhems-exam-system/backend/internal/models"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"gorm.io/gorm"

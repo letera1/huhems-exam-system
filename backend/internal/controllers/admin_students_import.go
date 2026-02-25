@@ -11,8 +11,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Keneandita/huhems-backend/internal/auth"
-	"github.com/Keneandita/huhems-backend/internal/models"
+	"github.com/letera1/huhems-exam-system/backend/internal/auth"
+	"github.com/letera1/huhems-exam-system/backend/internal/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
