@@ -1,0 +1,6 @@
+Text,Type,Choices,Correct
+"What does SDLC stand for?",single,"System Design Life Cycle|Software Development Life Cycle|Software Design Life Cycle|System Development Life Cycle",2
+"Which model is best for projects with clear, fixed requirements?",single,"Agile|Spiral|Waterfall|V-Model",3
+"In Object-Oriented Programming, what is Encapsulation?",single,"Hiding internal details and showing functionality|Deriving a new class from an existing class|Writing multiple methods with the same name|Defining an interface",1
+"Which of the following are agile methodologies? (Select all that apply)",multi,"Scrum|Waterfall|Kanban|V-Model",1|3
+"What is the primary goal of regression testing?",single,"To check if new code breaks existing functionality|To test individual units of code|To check system performance under load|To test the user interface",1
